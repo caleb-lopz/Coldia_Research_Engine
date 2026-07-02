@@ -7,3 +7,6 @@
 prompts.py
 **/prompts.py
 .github/skills/**/SKILL.md
+
+# Local history and editor artifacts
+.history/

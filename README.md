@@ -151,6 +151,10 @@ The demo illustrates:
 - how the final report is generated in a structured PDF format,
 - and how to present the system in a professional setting without sharing private data.
 
+Example demo asset:
+
+- [demo/coldiav5_demo_report.pdf](demo/coldiav5_demo_report.pdf) — a redacted sample report for presentation purposes.
+
 Suggested demo flow:
 
 1. Run the pipeline with a sample product description.
