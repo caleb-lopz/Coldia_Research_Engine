@@ -1,0 +1,194 @@
+# Coldia Research Engine
+
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![Anthropic](https://img.shields.io/badge/LLM-Anthropic%20Claude-8A2BE2) ![PDF](https://img.shields.io/badge/Output-PDF%20Report-2E8B57) ![JSON](https://img.shields.io/badge/Format-Structured%20JSON-FF7F50)
+
+## Overview
+
+This repository is not a toy demo. It is a practical, business-oriented research engine designed to support B2B prospecting workflows for cold email and LinkedIn direct messaging. The system takes a product description, researches qualified companies, enriches contact information, builds personalized outreach strategies, validates the output, and generates a polished PDF report for internal review.
+
+The core idea is simple but powerful: instead of sending generic outreach, the pipeline produces research-backed targeting and messaging that is specific to each company, its context, and its likely buying signals. In this sense, the project is a template for a real outbound intelligence system that can be used as a foundation for a commercial product, an internal sales operation, or a more advanced lead-research stack.
+
+## Why this project exists
+
+Many prospecting workflows fail because they rely on low-quality targeting and generic messaging. This project was built to solve that problem by combining:
+
+- multi-stage company research,
+- signal-based qualification,
+- contact enrichment,
+- personalized cold outreach drafting,
+- validation checks,
+- and final PDF report generation.
+
+It is especially useful when the goal is to create a repeatable pipeline for identifying relevant companies, understanding their pain points, and preparing outreach assets that feel grounded in real evidence rather than generic templates.
+
+## What the system does
+
+The current implementation follows a multi-agent workflow:
+
+1. Research agent gathers target company signals from public sources and structured evidence.
+2. Contact enrichment agent attempts to enrich decision-maker and supporting contact information.
+3. Strategy agent creates tailored outreach assets for email, LinkedIn, and call scripts.
+4. Validation agent checks the quality of the company selection, the drafts, and the contact data.
+5. The final output is rendered into a PDF report for review and distribution.
+
+This makes the repository useful as both a research engine and as a blueprint for more advanced B2B prospecting systems.
+
+## Tech stack
+
+- Python 3.10+
+- Anthropic API with Claude models
+- python-dotenv for environment management
+- fpdf for PDF generation
+- Structured JSON as the primary interchange format
+- Prompt-driven multi-agent orchestration
+
+## Project structure
+
+- [main.py](main.py) — orchestrates the full pipeline, including model calls, rate limiting, retries, and report generation.
+- [prompts.py](prompts.py) — contains the system prompts for research, contact enrichment, sales strategy, and validation.
+- [pdf_gen.py](pdf_gen.py) — renders the final output into a professional PDF report.
+
+## Requirements
+
+Install the following Python dependencies:
+
+```bash
+pip install anthropic python-dotenv fpdf
+```
+
+You will also need an Anthropic API key configured in your environment:
+
+```bash
+export ANTHROPIC_API_KEY="your_key_here"
+```
+
+If you are using a local environment file, create a `.env` file with the same variable.
+
+## Architecture
+
+The architecture is deliberately modular. The processing pipeline is organized into stages so each agent has a clear responsibility.
+
+### 1. Research stage
+The first stage focuses on identifying qualified target companies. It is designed to extract:
+
+- company name and industry,
+- recent trigger events,
+- pain signals,
+- technical context,
+- evidence-based reasons to contact the company now.
+
+This stage is the foundation of the entire workflow because the quality of the downstream material depends on the accuracy of the initial research.
+
+### 2. Contact enrichment stage
+The second stage enriches the research output with contact-oriented detail. The goal is to identify decision-makers, champions, and support contacts when reliable evidence exists. This stage is intentionally conservative: if a contact cannot be verified, the code avoids fabricating it.
+
+### 3. Sales strategy stage
+The third stage converts research into actual outreach assets. It generates:
+
+- email subject lines,
+- cold email bodies,
+- LinkedIn connection notes and follow-up messages,
+- call script openers and closers,
+- execution instructions,
+- and ranked hypotheses for why the company is worth targeting now.
+
+### 4. Validation stage
+The fourth stage acts as a quality gate. It checks whether the company is a good target, whether the strategy is specific enough, and whether the drafts are grounded in evidence rather than generic copy.
+
+### 5. Report generation
+The final stage compiles the validated output into a structured PDF report with cover pages, company sections, and an audit log.
+
+## Installation
+
+1. Clone or download this repository.
+2. Create a virtual environment:
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
+
+   On Windows PowerShell:
+
+   ```powershell
+   py -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+   pip install anthropic python-dotenv fpdf
+   ```
+
+4. Create a `.env` file and add your Anthropic API key.
+5. Run the pipeline:
+
+   ```bash
+   python main.py
+   ```
+
+## Usage
+
+The project is designed to be run as a complete pipeline. A typical workflow is:
+
+- define the product being researched,
+- allow the research agents to identify companies,
+- let the contact and strategy stages build outreach content,
+- validate output quality,
+- and generate a PDF report.
+
+The prompts and business logic are centralized enough that you can adapt the system for different ICPs, industries, or outbound motion types.
+
+## Demo
+
+A safe demo is available in the [demo](demo) folder. It uses censored and fictional data so the workflow can be shown without exposing sensitive customer or prospect information.
+
+The demo illustrates:
+
+- how the pipeline identifies a sample company profile,
+- how the research and strategy agents build outreach recommendations,
+- how the final report is generated in a structured PDF format,
+- and how to present the system in a professional setting without sharing private data.
+
+Suggested demo flow:
+
+1. Run the pipeline with a sample product description.
+2. Review the generated company research and strategy output.
+3. Open the final PDF report.
+4. Explain the workflow while keeping all examples redacted and non-confidential.
+
+## Roadmap
+
+The current version is a strong foundation. The next steps should focus on making it more reliable, more scalable, and more production-ready.
+
+- [ ] Add provider abstraction so the system can switch between Anthropic, Gemini, and other LLM providers.
+- [ ] Introduce context management and summarization to avoid prompt bloat when research grows large.
+- [ ] Add resumable execution so partial runs can be recovered instead of failing completely.
+- [ ] Improve contact verification with a second-pass enrichment layer and stronger source validation.
+- [ ] Add structured logging and observability for each stage.
+- [ ] Add export options for CSV, JSON, and CRM-friendly formats.
+- [ ] Add a configuration layer for custom ICPs, tone, and outreach strategy settings.
+- [ ] Add rate-limit-aware orchestration that can pause, recover, and continue gracefully.
+
+## Recommendations and operational notes
+
+The current implementation performs well as a research-driven outreach engine, but there are important production considerations:
+
+- The current setup relies on Claude models. For large-scale deployment, Gemini may be a more cost-effective alternative, but it requires stronger context handling and prompt discipline.
+- The system is sensitive to prompt quality and research context length. If you change models, add a context summarization layer to prevent the agent from losing critical details.
+- The rate limiter is useful, but it can stop the pipeline before all work is completed. A resumable mode would make the system much more robust in production.
+- Contact accuracy is still a weak point when public data is incomplete. The current code intentionally avoids inventing data, which is the correct behavior for a serious outbound system.
+
+## Contribution
+
+Contributions are welcome if they improve the quality, reliability, or extensibility of the system.
+
+Suggested approach:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Improve the prompts, orchestration, validation logic, or reporting workflow.
+4. Submit a pull request with a clear explanation of the improvement.
+
+Please keep changes focused, well-documented, and aligned with the overall purpose of the project: building a serious research engine for outbound prospecting.

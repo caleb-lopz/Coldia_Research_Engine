@@ -1,0 +1,9 @@
+# Environment variables
+.env
+.env.*
+*.env
+
+# Prompt assets and local prompt definitions
+prompts.py
+**/prompts.py
+.github/skills/**/SKILL.md
