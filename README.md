@@ -142,7 +142,7 @@ The prompts and business logic are centralized enough that you can adapt the sys
 
 ## Demo
 
-A safe demo is available in the [demo](demo) folder. It uses censored and fictional data so the workflow can be shown without exposing sensitive customer or prospect information.
+this demo uses censored and fictional data so the workflow can be shown without exposing sensitive customer or prospect information.
 
 The demo illustrates:
 
